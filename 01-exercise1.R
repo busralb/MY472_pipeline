@@ -1,4 +1,5 @@
 data <- read.csv("Wholesale_customers_data.csv")
+
 calculate_deviation <- function(data, outlier_threshold = NULL) {
   # Split the data by region
   data_by_region <- split(data, data$Region)
@@ -28,6 +29,6 @@ calculate_deviation <- function(data, outlier_threshold = NULL) {
   return(all_deviations)
 }
 
-# Call the function with an outlier threshold (e.g., 2 for a 2-standard deviation threshold)
+# Call the function with an outlier threshold
 outliers_removed_deviations <- calculate_deviation(data, outlier_threshold = 2)
 print(outliers_removed_deviations)
