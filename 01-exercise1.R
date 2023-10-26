@@ -1,6 +1,6 @@
 data <- read.csv("Wholesale_customers_data.csv")
 
-calculate_deviation <- function(data) {
+calculate_deviation <- function(data, outlier_threshold = NULL) {
   # Split the data by region
   data_by_region <- split(data, data$Region)
   
@@ -20,6 +20,16 @@ calculate_deviation <- function(data) {
   # Combine deviations for all customers
   all_deviations <- do.call(rbind, deviations)
   
+  if (!is.null(outlier_threshold)) {
+    # Calculate the absolute deviations
+    absolute_deviations <- abs(all_deviations)
+    
+    # Check if any absolute deviation exceeds the threshold
+    outliers <- apply(absolute_deviations, 1, max) > outlier_threshold
+    
+    # Filter out outliers
+    all_deviations <- all_deviations[!outliers, ]
+  } 
   return(all_deviations)
 }
 deviations <- calculate_deviation(data)
